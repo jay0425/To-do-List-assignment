@@ -15,12 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={cn(
-          "font-pretendard font-regular text-gray-900 ",
-          "w-full min-h-screen relative",
-        )}
-      >
+      <body className="w-full min-h-screen relative">
         <Providers>{children}</Providers>
       </body>
     </html>
