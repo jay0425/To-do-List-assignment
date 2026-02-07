@@ -29,7 +29,7 @@ export const createItem = async (name: string) => {
 };
 
 // 항목 목록 조회 // ! 추후 pageSize 최대 값 확인 필요
-export const listItems = async (page = 1, pageSize = 10) => {
+export const listItems = async (page = 1, pageSize = 100) => {
   try {
     const { data } = await api.get("/items", {
       params: { page, pageSize },

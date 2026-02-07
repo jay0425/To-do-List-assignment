@@ -55,10 +55,12 @@ const Button = ({
     }
   };
 
-  const content = (
+  const content = isPending ? (
+    <Spinner />
+  ) : (
     <>
       {renderIcon()}
-      {isLabel && (isPending ? <Spinner /> : <>{children}</>)}
+      {isLabel && children}
     </>
   );
 

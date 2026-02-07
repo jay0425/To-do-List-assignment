@@ -3,16 +3,15 @@
 import { useState, type ChangeEvent, type KeyboardEvent } from "react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { DoneRow } from "@/features/todoList/components/check-list/doneRow";
-import { TodoRow } from "@/features/todoList/components/check-list/todoRow";
 import { useTaskMutation } from "@/features/todoList/mutations";
 import { useTasksList } from "@/features/todoList/queries";
 import { Task } from "@/features/todoList/types";
+import { Row } from "@/features/todoList/components/check-list";
 
 export default function ItemListPage() {
   const [text, setText] = useState("");
-  const { data } = useTasksList();
-  const { newItem } = useTaskMutation();
+  const { data, isLoading } = useTasksList();
+  const { newItem, isNewPending } = useTaskMutation();
 
   const tasks = (data ?? []) as Task[];
 
@@ -37,14 +36,14 @@ export default function ItemListPage() {
             if (e.key === "Enter") handleAdd();
           }}
         />
-        <Button type="button" onClick={handleAdd}>
+        <Button type="button" onClick={handleAdd} disabled={isNewPending}>
           추가하기
         </Button>
       </header>
 
       <main className="flex flex-col gap-12 xl:flex-row xl:gap-6 w-full">
-        <TodoRow items={todoItems} />
-        <DoneRow items={doneItems} />
+        <Row items={todoItems} isPending={isLoading} />
+        <Row items={doneItems} isPending={isLoading} isDone />
       </main>
     </div>
   );

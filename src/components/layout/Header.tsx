@@ -22,8 +22,8 @@ const Header = ({ className }: HeaderProps) => {
         className="inline-flex"
         aria-label="홈으로 이동"
       >
-        <SmallLogoIcon className="block md:hidden" />
-        <LargeLogoIcon className="hidden md:block" />
+        <SmallLogoIcon className="block md:hidden cursor-pointer" />
+        <LargeLogoIcon className="hidden md:block cursor-pointer" />
       </button>
     </header>
   );
