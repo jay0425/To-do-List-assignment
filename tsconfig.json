@@ -3,7 +3,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -22,18 +26,27 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "public/*": ["public/*"],
-      "@/features/*": ["src/features/*"]
+      "@/*": [
+        "src/*"
+      ],
+      "public/*": [
+        "public/*"
+      ],
+      "@/features/*": [
+        "src/features/*"
+      ]
     }
   },
   "include": [
+    "svgr.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "src/types",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
