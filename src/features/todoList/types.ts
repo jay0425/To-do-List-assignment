@@ -19,7 +19,7 @@ export type UpdateItemPayload = { id: Item["id"] } & {
   isCompleted?: boolean;
 };
 
-export type DetailRowProps = { name: Item["name"] } & {
+export type DetailRowProps = { id: Item["id"]; name: Item["name"] } & {
   isDone: boolean;
   onNameChange?: (name: string) => void;
 };

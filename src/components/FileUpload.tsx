@@ -7,22 +7,26 @@ import IconButton from "./IconButton";
 
 interface FileUploadProps {
   imagePreviewUrl?: string;
+  isUploading?: boolean;
+  onUpload?: (file: File) => Promise<string>;
 }
 
 const ALLOWED_IMAGE_EXT = ["jpg", "jpeg", "png", "gif"] as const;
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_SIZE = 5 * 1024 * 1024;
 const ENGLISH_FILENAME = /^[A-Za-z0-9._-]+$/;
 
-export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
+export default function FileUpload({ imagePreviewUrl, onUpload, isUploading }: FileUploadProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageUrl] = useState<string>(imagePreviewUrl ?? "");
 
+  const cleanupBlob = (url?: string) => {
+    if (url && url.startsWith("blob:")) URL.revokeObjectURL(url);
+  };
+
   useEffect(() => {
-    if (!imagePreviewUrl) return;
-
-    if (imageUrl?.startsWith("blob:")) URL.revokeObjectURL(imageUrl);
-
-    setImageUrl(imagePreviewUrl);
+    if (imagePreviewUrl === undefined) return;
+    cleanupBlob(imageUrl);
+    setImageUrl(imagePreviewUrl ?? "");
   }, [imagePreviewUrl]);
 
   const hasImage = Boolean(imageUrl);
@@ -31,10 +35,6 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
     () => ALLOWED_IMAGE_EXT.map((ext) => `image/${ext === "jpg" ? "jpeg" : ext}`).join(","),
     [],
   );
-
-  const cleanupBlob = (url?: string) => {
-    if (url && url.startsWith("blob:")) URL.revokeObjectURL(url);
-  };
 
   const isValidImage = (f: File) => {
     const name = f.name;
@@ -47,15 +47,19 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
     return true;
   };
 
-  const openPicker = () => fileInputRef.current?.click();
+  const openPicker = () => {
+    if (isUploading) return;
+    fileInputRef.current?.click();
+  };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const fileItem = e.target.files?.item(0);
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const inputEl = e.currentTarget;
+    const fileItem = inputEl.files?.item(0);
     if (!fileItem) return;
 
     if (!isValidImage(fileItem)) {
       alert("이미지(최대 1개)만 가능 / 파일명은 영어만 / 5MB 이하로 업로드 해주세요.");
-      e.currentTarget.value = "";
+      inputEl.value = "";
       return;
     }
 
@@ -63,7 +67,13 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
     const preview = URL.createObjectURL(fileItem);
     setImageUrl(preview);
 
-    e.currentTarget.value = "";
+    if (onUpload) {
+      const url = await onUpload(fileItem);
+      cleanupBlob(preview);
+      setImageUrl(url);
+    }
+
+    inputEl.value = "";
   };
 
   useEffect(() => {
@@ -78,6 +88,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
         className="hidden"
         accept={acceptAttr}
         onChange={handleFileChange}
+        disabled={isUploading}
       />
 
       <div
@@ -87,6 +98,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
         className={cn(
           "relative w-full xl:w-96 h-77.75 rounded-3xl bg-slate-50",
           "border-2 border-dashed border-slate-300 cursor-pointer",
+          isUploading && "opacity-60 cursor-not-allowed",
         )}
         style={
           hasImage
@@ -113,6 +125,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
                 openPicker();
               }}
               aria-label="이미지 업로드"
+              disabled={isUploading}
             />
           ) : (
             <IconButton
@@ -124,6 +137,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
               colors="slate"
               iconType="pencil"
               aria-label="이미지 변경"
+              disabled={isUploading}
             />
           )}
         </div>

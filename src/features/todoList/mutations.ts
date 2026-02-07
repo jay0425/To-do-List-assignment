@@ -55,8 +55,15 @@ export const useTaskMutation = () => {
     onError: () => errorToast("수정 실패하였습니다. 다시 시도해주세요."),
   });
 
-  const { mutate: editImage, isPending: isEditImagePending } = useMutation({
-    mutationFn: (file: File) => uploadImage(file),
+  const { mutateAsync: editImage, isPending: isEditImagePending } = useMutation<
+    string,
+    Error,
+    File
+  >({
+    mutationFn: async (file: File) => {
+      const url = await uploadImage(file);
+      return url;
+    },
     onError: () => errorToast("이미지 업로드 실패하였습니다. 다시 시도해주세요."),
   });
 

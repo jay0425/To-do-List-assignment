@@ -72,18 +72,18 @@ export const deleteItem = async (itemId: number) => {
 };
 
 // 이미지 업로드
-export const uploadImage = async (file: File) => {
+export const uploadImage = async (file: File): Promise<string> => {
   try {
     const formData = new FormData();
     formData.append("image", file);
 
-    const { data } = await api.post("/images/upload", formData);
-
-    const url = data.url;
+    const { data } = await axios.post(`${BASE_URL}/${TENANT_ID}/images/upload`, formData);
+    const url = data?.url;
     if (!url) throw new Error("Upload response missing url");
 
     return url;
   } catch (error) {
     throwApiError(error);
+    throw error;
   }
 };

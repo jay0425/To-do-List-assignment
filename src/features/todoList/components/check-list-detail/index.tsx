@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
 import { DetailRowProps } from "../../types";
 import Chip from "@/components/Chip";
+import { useTaskMutation } from "../../mutations";
 
 export const DetailRow = (props: DetailRowProps) => {
   const isDone = props.isDone;
@@ -15,6 +16,11 @@ export const DetailRow = (props: DetailRowProps) => {
     setName(props.name);
   }, [props.name]);
 
+  const { editItem, isEditPending } = useTaskMutation();
+  const handleSubmit = (id: number) => {
+    editItem({ id, isCompleted: !isDone });
+  };
+
   return (
     <div
       className={cn(
@@ -23,7 +29,14 @@ export const DetailRow = (props: DetailRowProps) => {
         isDone ? "bg-violet-200" : "bg-white",
       )}
     >
-      <Chip isDone={isDone} />
+      <Chip
+        type="button"
+        disabled={isEditPending}
+        onClick={() => handleSubmit(props.id)}
+        aria-label={isDone ? "완료로 이동" : "미완료로 이동"}
+        isDone={isDone}
+        className="cursor-pointer"
+      />
       <input
         value={name}
         onChange={(e) => {
