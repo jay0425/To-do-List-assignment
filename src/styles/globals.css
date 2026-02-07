@@ -57,6 +57,31 @@
       "Noto Sans KR",
       sans-serif;
   }
+
+  /* 스크롤바 커스텀 */
+  .scrollbar-memo::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .scrollbar-memo::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-memo::-webkit-scrollbar-thumb {
+    background: #fde68a;
+    border-radius: 9999px;
+    min-height: 45px;
+  }
+
+  .scrollbar-memo::-webkit-scrollbar-thumb:hover {
+    background: #fde68a;
+  }
+
+  /* Firefox */
+  .scrollbar-memo {
+    scrollbar-width: thin;
+    scrollbar-color: #fde68a transparent;
+  }
 }
 
 * {

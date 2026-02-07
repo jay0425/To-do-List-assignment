@@ -71,7 +71,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
   }, [imageUrl]);
 
   return (
-    <div className="w-full">
+    <div>
       <input
         ref={fileInputRef}
         type="file"
@@ -85,7 +85,7 @@ export default function FileUpload({ imagePreviewUrl }: FileUploadProps) {
         tabIndex={0}
         onClick={openPicker}
         className={cn(
-          "relative w-full h-77.75 rounded-3xl bg-slate-50",
+          "relative w-full xl:w-96 h-77.75 rounded-3xl bg-slate-50",
           "border-2 border-dashed border-slate-300 cursor-pointer",
         )}
         style={
