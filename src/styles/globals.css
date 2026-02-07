@@ -11,15 +11,20 @@
   --color-slate-300: #cbd5e1;
   --color-slate-200: #e2e8f0;
   --color-slate-100: #f1f5f9;
+  --color-slate-50: #f8fafc;
 
   --color-violet-600: #7c3aed;
   --color-violet-100: #ede9fe;
 
   --color-rose-500: #f43f5e;
+  --color-amber-300: #fcd34d;
   --color-lime-300: #bef264;
+  --color-green-700: #15803d;
   --color-amber-800: #92400e;
 
-  --breakpoint-3xl: 120rem;
+  --breakpoint-sm: 375px; /* mobile */
+  --breakpoint-md: 744px; /* tablet */
+  --breakpoint-xl: 1920px; /* desktop */
 }
 
 @font-face {

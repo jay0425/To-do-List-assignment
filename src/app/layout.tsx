@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Providers from "@/libs/providers";
 import "../styles/globals.css";
-import { cn } from "@/utils/cn";
 
 export const metadata: Metadata = {
   title: "Todo List",
